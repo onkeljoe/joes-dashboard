@@ -5,7 +5,11 @@ import {
   publicProcedure,
   // protectedProcedure,
 } from "~/server/api/trpc";
-import { balanceOf } from "~/utils/smartContracts/read_contract";
+import {
+  balanceOf,
+  emissionCurve,
+  levelOnUpdate,
+} from "~/utils/smartContracts/read_contract";
 
 export const relicRouter = createTRPCRouter({
   balanceOf: publicProcedure
@@ -14,5 +18,13 @@ export const relicRouter = createTRPCRouter({
       return {
         balance: await balanceOf(input.address),
       };
+    }),
+  emissionCurve: publicProcedure.query(async () => {
+    return { address: await emissionCurve() };
+  }),
+  levelOnUpdate: publicProcedure
+    .input(z.object({ relicId: z.number() }))
+    .query(async ({ input }) => {
+      return { level: await levelOnUpdate(input.relicId) };
     }),
 });
