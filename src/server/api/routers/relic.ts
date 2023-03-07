@@ -8,6 +8,7 @@ import {
 import {
   balanceOf,
   emissionCurve,
+  getPositionForId,
   levelOnUpdate,
 } from "~/utils/smartContracts/read_contract";
 
@@ -22,6 +23,11 @@ export const relicRouter = createTRPCRouter({
   emissionCurve: publicProcedure.query(async () => {
     return { address: await emissionCurve() };
   }),
+  getPositionForId: publicProcedure
+    .input(z.object({ relicId: z.number() }))
+    .query(async ({ input }) => {
+      return { position: await getPositionForId(input.relicId) };
+    }),
   levelOnUpdate: publicProcedure
     .input(z.object({ relicId: z.number() }))
     .query(async ({ input }) => {

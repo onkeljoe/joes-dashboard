@@ -12,6 +12,8 @@ const Read: NextPage = () => {
     .useQuery()
     .data?.address.toString();
   const myNextLevel = api.relic.levelOnUpdate.useQuery({ relicId }).data?.level;
+  const myPosition = api.relic.getPositionForId.useQuery({ relicId }).data
+    ?.position;
   return (
     <>
       <Card m={12} p={6}>
@@ -23,8 +25,23 @@ const Read: NextPage = () => {
         <Text>{emissionCurveContract}</Text>
       </Card>
       <Card m={12} p={6}>
+        <Text>Position for Relic {relicId}:</Text>
+        <Text>
+          amount: {parseFloat(myPosition?.amount || "0").toFixed(2)} $BEETS -
+          Level: {myPosition?.level} - PoolId: {myPosition?.poolId}
+        </Text>
+        <Text>
+          reward Debt: {parseFloat(myPosition?.rewardDebt || "0").toFixed(2)}{" "}
+          reward Credit: {myPosition?.rewardCredit}
+        </Text>
+        <Text>
+          entry Date:{" "}
+          {new Date((myPosition?.entry || 0) * 1000).toLocaleDateString()}
+        </Text>
+      </Card>
+      <Card m={12} p={6}>
         <Text>Next level for Relic {relicId}:</Text>
-        <Text>{myNextLevel} Relics</Text>
+        <Text>{myNextLevel}</Text>
       </Card>
     </>
   );
