@@ -14,6 +14,12 @@ interface Position {
   level: BigNumber;
 }
 
+interface LeveInfo {
+  requiredMaturities: BigNumber[];
+  multipliers: BigNumber[];
+  balance: BigNumber[];
+}
+
 const contractAdress = "0x1ed6411670c709F4e163854654BD52c74E66D7eC";
 const providerUrl = "https://rpc.ftm.tools";
 
@@ -34,11 +40,23 @@ export async function getApproved() {
   return null;
 }
 
-export async function getLevelInfo() {
-  return null;
+export async function getLevelInfo(poolId: number) {
+  const levelInfo = (await contract.getLevelInfo(poolId)) as LeveInfo;
+  const result = {
+    requiredMaturities: levelInfo.requiredMaturities.map((x) => x.toNumber()),
+    multipliers: levelInfo.multipliers.map((x) => x.toNumber()),
+    balance: levelInfo.balance.map((x) =>
+      parseFloat(ethers.utils.formatEther(x))
+    ),
+  };
+  // console.log(result);
+  return result;
 }
 
-export async function getPoolInfo() {
+export async function getPoolInfo(poolId: number) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const poolInfo = await contract.getPoolInfo(poolId);
+  console.log(poolInfo);
   return null;
 }
 
