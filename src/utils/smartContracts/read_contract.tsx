@@ -20,24 +20,27 @@ interface LeveInfo {
   balance: BigNumber[];
 }
 
+type Address = string;
+
 const contractAdress = "0x1ed6411670c709F4e163854654BD52c74E66D7eC";
 const providerUrl = "https://rpc.ftm.tools";
 
 const provider = new ethers.providers.JsonRpcProvider(providerUrl);
 const contract = new ethers.Contract(contractAdress, relicAbi, provider);
 
-export async function balanceOf(address: string): Promise<number> {
+export async function balanceOf(address: Address): Promise<number> {
   const resultobj = (await contract.balanceOf(address)) as BigNumber;
   return resultobj.toNumber() || 0;
 }
 
-export async function emissionCurve(): Promise<string> {
-  const address = (await contract.emissionCurve()) as string;
+export async function emissionCurve(): Promise<Address> {
+  const address = (await contract.emissionCurve()) as Address;
   return address || "";
 }
 
-export async function getApproved() {
-  return null;
+export async function getApproved(relicId: number): Promise<Address> {
+  const address = (await contract.getApproved(relicId)) as Address;
+  return address || "";
 }
 
 export async function getLevelInfo(poolId: number) {
@@ -94,8 +97,15 @@ export async function isApprovedForAll() {
   return null;
 }
 
-export async function isApprovedOrOwner() {
-  return null;
+export async function isApprovedOrOwner(
+  spender: Address,
+  relicId: number
+): Promise<boolean> {
+  const result = (await contract.isApprovedOrOwner(
+    spender,
+    relicId
+  )) as boolean;
+  return result;
 }
 
 export async function levelOnUpdate(relicId: number): Promise<number> {
@@ -104,30 +114,35 @@ export async function levelOnUpdate(relicId: number): Promise<number> {
   return level.toNumber();
 }
 
-// not implemented: name
+// not implemented: name => always "Reliquary Deposit"
 
 export async function nftDescriptor() {
   return null;
 }
 
-export async function ownerOf() {
-  return null;
+export async function ownerOf(relicId: number): Promise<Address> {
+  const address = (await contract.ownerOf(relicId)) as Address;
+  return address || "";
 }
 
-export async function pendingReward() {
-  return null;
+export async function pendingReward(relicId: number): Promise<number> {
+  const result = (await contract.pendingReward(relicId)) as BigNumber;
+  const amount = parseFloat(ethers.utils.formatEther(result));
+  return amount;
 }
 
 export async function pendingRewardsOfOwner() {
   return null;
 }
 
-export async function poolLength() {
-  return null;
+export async function poolLength(): Promise<number> {
+  const result = (await contract.poolLength()) as BigNumber;
+  return result.toNumber();
 }
 
-export async function poolToken() {
-  return null;
+export async function poolToken(poolId: number): Promise<Address> {
+  const address = (await contract.poolToken(poolId)) as Address;
+  return address || "";
 }
 
 export async function relicPositionsOfOwner() {
@@ -151,18 +166,28 @@ export async function tokenByIndex() {
   return null;
 }
 
-export async function tokenOfOwnerByIndex() {
-  return null;
+export async function tokenOfOwnerByIndex(
+  owner: Address,
+  relicIndex: number
+): Promise<number> {
+  const tokenId = (await contract.tokenOfOwnerByIndex(
+    owner,
+    relicIndex
+  )) as BigNumber;
+  return tokenId.toNumber();
 }
 
-export async function tokenURI() {
-  return null;
+export async function tokenURI(tokenId: number): Promise<string> {
+  const url = (await contract.tokenURI(tokenId)) as string;
+  return url || "";
 }
 
-export async function totalAllocPoint() {
-  return null;
+export async function totalAllocPoint(): Promise<number> {
+  const allocPoint = (await contract.totalAllocPoint()) as BigNumber;
+  return allocPoint.toNumber();
 }
 
-export async function totalSupply() {
-  return null;
+export async function totalSupply(): Promise<number> {
+  const supply = (await contract.totalSupply()) as BigNumber;
+  return supply.toNumber();
 }
