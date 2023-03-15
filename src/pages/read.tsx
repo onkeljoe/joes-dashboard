@@ -27,6 +27,9 @@ const Read: NextPage = () => {
   const myPosition = api.relic.getPositionForId.useQuery({ relicId }).data
     ?.position;
   const levelInfo = api.relic.getLevelInfo.useQuery({ poolId }).data?.levelInfo;
+  const relicPositions = api.relic.relicPositionsOfOwner.useQuery({
+    owner: myAddr,
+  }).data;
   return (
     <>
       <Card m={12} p={6}>
@@ -129,6 +132,10 @@ const Read: NextPage = () => {
       <Card m={12} p={6}>
         <Text>Next level for Relic {relicId}:</Text>
         <Text>{myNextLevel}</Text>
+      </Card>
+      <Card m={12} p={6}>
+        <Text>relicPositionsOfOwner {myAddr}:</Text>
+        <Text>{(relicPositions || "").toString()}</Text>
       </Card>
     </>
   );

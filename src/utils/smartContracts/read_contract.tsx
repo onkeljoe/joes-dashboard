@@ -145,8 +145,29 @@ export async function poolToken(poolId: number): Promise<Address> {
   return address || "";
 }
 
-export async function relicPositionsOfOwner() {
-  return null;
+export async function relicPositionsOfOwner(owner: Address) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const result = (await contract.relicPositionsOfOwner(owner)) as {
+    relicIds: BigNumber[];
+    positionInfos: Position[];
+  };
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  const ids = result.relicIds.map((x) => x.toNumber());
+  const positions = result.positionInfos.map((position) => {
+    const pos = {
+      amount: parseFloat(ethers.utils.formatEther(position.amount)),
+      rewardDebt: parseFloat(ethers.utils.formatEther(position.rewardDebt)),
+      rewardCredit: parseFloat(ethers.utils.formatEther(position.rewardCredit)),
+      entry: position.entry.toNumber(),
+      poolId: position.poolId.toNumber(),
+      level: position.level.toNumber(),
+    };
+    return pos;
+  });
+  // console.log("relicPositionsOfOwner ", result);
+  console.log("ids: ", ids);
+  console.log("pos: ", positions);
+  return { ids, positions };
 }
 
 // not implemented: rewardToken (immutable):
