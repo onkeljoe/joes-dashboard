@@ -11,6 +11,7 @@ import {
   getLevelInfo,
   getPositionForId,
   levelOnUpdate,
+  pendingRewardsOfOwner,
   relicPositionsOfOwner,
 } from "~/utils/smartContracts/read_contract";
 
@@ -45,5 +46,12 @@ export const relicRouter = createTRPCRouter({
     .query(async ({ input }) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       return { level: await relicPositionsOfOwner(input.owner) };
+    }),
+  pendingRewardsOfOwner: publicProcedure
+    .input(z.object({ address: z.string() }))
+    .query(async ({ input }) => {
+      return {
+        rewards: await pendingRewardsOfOwner(input.address),
+      };
     }),
 });

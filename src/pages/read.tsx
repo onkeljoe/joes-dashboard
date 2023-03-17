@@ -30,6 +30,9 @@ const Read: NextPage = () => {
   const relicPositions = api.relic.relicPositionsOfOwner.useQuery({
     owner: myAddr,
   }).data;
+  const pendingRewards = api.relic.pendingRewardsOfOwner.useQuery({
+    address: myAddr,
+  }).data?.rewards;
   return (
     <>
       <Card m={12} p={6}>
@@ -135,7 +138,47 @@ const Read: NextPage = () => {
       </Card>
       <Card m={12} p={6}>
         <Text>relicPositionsOfOwner {myAddr}:</Text>
-        <Text>{(relicPositions || "").toString()}</Text>
+        <Text>{(JSON.stringify(relicPositions) || "").toString()}</Text>
+      </Card>
+      <Card m={12} p={6}>
+        <Text>pendingRewardsOfOwner {myAddr}:</Text>
+        <Table size="sm" variant="striped" colorScheme="blue" maxW={100}>
+          <Thead>
+            <Tr>
+              <Th isNumeric>Relic ID</Th>
+              <Th isNumeric>Pool ID</Th>
+              <Th isNumeric>pending Reward</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {pendingRewards &&
+              pendingRewards.map((rew, index) => {
+                return (
+                  <Tr key={index}>
+                    <Td isNumeric>{rew.relicId}</Td>
+                    <Td isNumeric>{rew.poolId}</Td>
+                    <Td isNumeric>
+                      {rew.pendingReward.toLocaleString(undefined, {
+                        maximumFractionDigits: 3,
+                      })}
+                    </Td>
+                  </Tr>
+                );
+              })}
+          </Tbody>
+          <Tfoot>
+            <Tr>
+              <Td></Td>
+              <Td></Td>
+              <Td isNumeric>
+                {pendingRewards &&
+                  pendingRewards
+                    .reduce((sum, cur) => sum + cur.pendingReward, 0)
+                    .toLocaleString(undefined, { maximumFractionDigits: 3 })}
+              </Td>
+            </Tr>
+          </Tfoot>
+        </Table>
       </Card>
     </>
   );

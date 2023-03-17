@@ -4,7 +4,7 @@ import { ethers } from "ethers";
 import type { BigNumber } from "ethers";
 // import { getAddress } from "ethers/lib/utils";
 import { relicAbi } from "../abi/relicAbi";
-import { keccak256 } from "ethers/lib/utils";
+// import { keccak256 } from "ethers/lib/utils";
 
 interface Position {
   amount: BigNumber;
@@ -15,10 +15,16 @@ interface Position {
   level: BigNumber;
 }
 
-interface LeveInfo {
+interface LevelInfo {
   requiredMaturities: BigNumber[];
   multipliers: BigNumber[];
   balance: BigNumber[];
+}
+
+interface PendingReward {
+  relicId: BigNumber;
+  poolId: BigNumber;
+  pendingReward: BigNumber;
 }
 
 type Address = string;
@@ -45,7 +51,7 @@ export async function getApproved(relicId: number): Promise<Address> {
 }
 
 export async function getLevelInfo(poolId: number) {
-  const levelInfo = (await contract.getLevelInfo(poolId)) as LeveInfo;
+  const levelInfo = (await contract.getLevelInfo(poolId)) as LevelInfo;
   const result = {
     requiredMaturities: levelInfo.requiredMaturities.map((x) => x.toNumber()),
     multipliers: levelInfo.multipliers.map((x) => x.toNumber()),
@@ -125,8 +131,13 @@ export async function levelOnUpdate(relicId: number): Promise<number> {
 
 // not implemented: name => always "Reliquary Deposit"
 
-export async function nftDescriptor() {
-  return null;
+// nftDescriptor:
+// 0: Address 0xa899df10eBeB8056bd7Af1AcF1f5f5C8d97e8D64 => contract
+// 1: Address 0x00000..
+// 2: Address 0xb7E67101565783895Efba5AB6DECf2312610ef89 => contract
+export async function nftDescriptor(input: number): Promise<Address> {
+  const address = (await contract.nftDescriptor(input)) as Address;
+  return address || "";
 }
 
 export async function ownerOf(relicId: number): Promise<Address> {
@@ -140,8 +151,20 @@ export async function pendingReward(relicId: number): Promise<number> {
   return amount;
 }
 
-export async function pendingRewardsOfOwner() {
-  return null;
+export async function pendingRewardsOfOwner(owner: Address) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const result = (await contract.pendingRewardsOfOwner(
+    owner
+  )) as PendingReward[];
+  const rewards = result.map((x) => {
+    return {
+      relicId: x.relicId.toNumber(),
+      poolId: x.poolId.toNumber(),
+      pendingReward: parseFloat(ethers.utils.formatEther(x.pendingReward)),
+    };
+  });
+  // console.log(rewards);
+  return rewards;
 }
 
 export async function poolLength(): Promise<number> {
@@ -174,8 +197,8 @@ export async function relicPositionsOfOwner(owner: Address) {
     return pos;
   });
   // console.log("relicPositionsOfOwner ", result);
-  console.log("ids: ", ids);
-  console.log("pos: ", positions);
+  // console.log("ids: ", ids);
+  // console.log("pos: ", positions);
   return { ids, positions };
 }
 
