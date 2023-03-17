@@ -4,6 +4,7 @@ import { ethers } from "ethers";
 import type { BigNumber } from "ethers";
 // import { getAddress } from "ethers/lib/utils";
 import { relicAbi } from "../abi/relicAbi";
+import { keccak256 } from "ethers/lib/utils";
 
 interface Position {
   amount: BigNumber;
@@ -77,6 +78,10 @@ export async function getPositionForId(relicId: number) {
   return result;
 }
 
+// bytes32 private constant OPERATOR = keccak256("OPERATOR");
+// bytes32 private constant EMISSION_CURVE = keccak256("EMISSION_CURVE");
+// const OPERATOR = keccak256("OPERATOR");
+// console.log(OPERATOR);
 export async function getRoleAdmin() {
   return null;
 }
@@ -93,8 +98,12 @@ export async function hasRole() {
   return null;
 }
 
-export async function isApprovedForAll() {
-  return null;
+export async function isApprovedForAll(
+  owner: Address,
+  operator: Address
+): Promise<boolean> {
+  const result = (await contract.isApprovedForAll(owner, operator)) as boolean;
+  return result;
 }
 
 export async function isApprovedOrOwner(
