@@ -205,8 +205,9 @@ export async function relicPositionsOfOwner(owner: Address) {
 // not implemented: rewardToken (immutable):
 // 0xf24bcf4d1e507740041c9cfd2dddb29585adce1e
 
-export async function rewarder() {
-  return null;
+export async function rewarder(whatever: number): Promise<Address> {
+  const address = (await contract.rewarder(whatever)) as Address;
+  return address || "";
 }
 
 export async function supportsInterface() {
