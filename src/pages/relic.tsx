@@ -10,10 +10,10 @@ import {
 } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import { api } from "~/utils/api";
 import { CustomConnectButton } from "~/components/CustomConnectButton";
 import { FbBack, FbSmall } from "~/components/fbeet";
 import { useAccount } from "wagmi";
+import { api } from "~/utils/api";
 
 const Read: NextPage = () => {
   const account = useAccount();
