@@ -28,8 +28,8 @@ export async function getRelicsByAddress(
           (relic.amount * (multipliers[relic.level] || 0)) / 100;
         return {
           relicId,
-          level: relic.level,
-          nextLevel,
+          level: relic.level + 1,
+          nextLevel: nextLevel + 1,
           isUpgradeable: relic.level !== nextLevel,
           amountFbeets: relic.amount,
           rewardPending,
