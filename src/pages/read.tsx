@@ -33,6 +33,10 @@ const Read: NextPage = () => {
   const pendingRewards = api.relic.pendingRewardsOfOwner.useQuery({
     address: myAddr,
   }).data?.rewards;
+
+  const relicList = api.relic.relicsByAddress.useQuery({ address: myAddr }).data
+    ?.list;
+
   return (
     <>
       <Card m={12} p={6}>
@@ -178,6 +182,58 @@ const Read: NextPage = () => {
               </Td>
             </Tr>
           </Tfoot>
+        </Table>
+      </Card>
+      <Card m={12} p={6}>
+        <Text>relic Infos for Address {myAddr}:</Text>
+        <Table size="sm" variant="striped" colorScheme="blue">
+          <Thead>
+            <Tr>
+              <Th isNumeric>Relic ID</Th>
+              <Th isNumeric>Level</Th>
+              <Th isNumeric>Next Level</Th>
+              <Th isNumeric>is upgradeable?</Th>
+              <Th isNumeric>amount fBEETS</Th>
+              <Th isNumeric>pending Reward</Th>
+              <Th isNumeric>payed Reward</Th>
+              <Th isNumeric>maBEETS voting power</Th>
+              <Th isNumeric>image URL</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {relicList &&
+              relicList.map((rel, index) => {
+                return (
+                  <Tr key={index}>
+                    <Td isNumeric>{rel.relicId}</Td>
+                    <Td isNumeric>{rel.level}</Td>
+                    <Td isNumeric>{rel.nextLevel}</Td>
+                    <Td isNumeric>{rel.isUpgradeable ? "yes" : "no"}</Td>
+                    <Td isNumeric>
+                      {rel.amountFbeets.toLocaleString(undefined, {
+                        maximumFractionDigits: 3,
+                      })}
+                    </Td>
+                    <Td isNumeric>
+                      {rel.rewardPending.toLocaleString(undefined, {
+                        maximumFractionDigits: 3,
+                      })}
+                    </Td>
+                    <Td isNumeric>
+                      {rel.rewardPayed.toLocaleString(undefined, {
+                        maximumFractionDigits: 3,
+                      })}
+                    </Td>
+                    <Td isNumeric>
+                      {rel.maBeetsVP.toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                      })}
+                    </Td>
+                    <Td isNumeric>{rel.imageUrl}</Td>
+                  </Tr>
+                );
+              })}
+          </Tbody>
         </Table>
       </Card>
     </>

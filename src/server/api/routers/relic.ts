@@ -5,6 +5,7 @@ import {
   publicProcedure,
   // protectedProcedure,
 } from "~/server/api/trpc";
+import { getRelicsByAddress } from "~/server/helpers/relic.helper";
 import {
   balanceOf,
   emissionCurve,
@@ -52,6 +53,13 @@ export const relicRouter = createTRPCRouter({
     .query(async ({ input }) => {
       return {
         rewards: await pendingRewardsOfOwner(input.address),
+      };
+    }),
+  relicsByAddress: publicProcedure
+    .input(z.object({ address: z.string() }))
+    .query(async ({ input }) => {
+      return {
+        list: await getRelicsByAddress(input.address),
       };
     }),
 });
