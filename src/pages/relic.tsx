@@ -2,25 +2,17 @@ import {
   Box,
   Card,
   Heading,
-  Table,
-  Tbody,
-  Td,
   Text,
-  Tfoot,
-  Th,
-  Thead,
-  Tr,
   VStack,
   HStack,
   Button,
   Divider,
-  Center,
 } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { api } from "~/utils/api";
 import { CustomConnectButton } from "~/components/CustomConnectButton";
-import { FbBack,FbSmall } from "~/components/fbeet";
+import { FbBack, FbSmall } from "~/components/fbeet";
 import { useAccount } from "wagmi";
 
 const Read: NextPage = () => {
@@ -35,7 +27,7 @@ const Read: NextPage = () => {
         <CustomConnectButton />
         {account.isConnected && <RelicDisplay />}
       </VStack>
-<FbBack/>
+      <FbBack />
     </>
   );
 };
@@ -47,11 +39,8 @@ const RelicDisplay = () => {
 
   const account = useAccount();
 
-  //const myAddr = "0xa3b926f6d2bB5507fE711847640bA2086CB11A75";
-  //const myAddr = "0xC677E71B02adc94534De993A907352f748d21143";
   const myAddr = account?.address;
-  const relicId = 163;
-  const poolId = 2;
+  // const poolId = 2;
 
   const relicPositions = api.relic.relicPositionsOfOwner.useQuery({
     owner: myAddr,
@@ -62,7 +51,9 @@ const RelicDisplay = () => {
   if (relicPositions?.level.ids.length === 0) {
     return (
       <>
-<p><FbSmall/> no relics</p>
+        <p>
+          <FbSmall /> no relics
+        </p>
       </>
     );
   }
@@ -81,7 +72,7 @@ const RelicDisplay = () => {
                     Level: {relicPositions.level.positions[index]?.level}
                   </Text>
                   <Text>
-                    <FbSmall/>{" "}
+                    <FbSmall />{" "}
                     {relicPositions.level.positions[index]?.amount.toFixed(2)}
                   </Text>
                   <Text>
