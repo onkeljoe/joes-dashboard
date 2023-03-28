@@ -12,8 +12,16 @@ import {
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { api } from "~/utils/api";
+import { CustomConnectButton } from "~/components/CustomConnectButton";
+
+import { useAccount } from "wagmi";
+
 
 const Read: NextPage = () => {
+  const  account = useAccount();
+
+console.log(account.address, account.isConnected)
+
   const myAddr = "0xa3b926f6d2bB5507fE711847640bA2086CB11A75";
   const relicId = 163;
   const poolId = 2;
@@ -33,8 +41,14 @@ const Read: NextPage = () => {
   const pendingRewards = api.relic.pendingRewardsOfOwner.useQuery({
     address: myAddr,
   }).data?.rewards;
+
+
+  if (account.isConnected) {
   return (
     <>
+      <Card m={12} p={6}>
+<CustomConnectButton/>
+      </Card>
       <Card m={12} p={6}>
         <Text>for Address {myAddr} found:</Text>
         <Text>{myBalance} Relics</Text>
@@ -182,6 +196,13 @@ const Read: NextPage = () => {
       </Card>
     </>
   );
+}
+return (
+      <Card m={12} p={6}>
+<CustomConnectButton/>
+      </Card>
+)
+
 };
 
 export default Read;
