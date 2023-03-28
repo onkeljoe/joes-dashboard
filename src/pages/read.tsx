@@ -23,21 +23,21 @@ const Read: NextPage = () => {
 
   console.log(account.address, account.isConnected);
 
-  const [myAddr, setMyAddr] = useState(account.address || "");
+  const [myAddr, setMyAddr] = useState((account.address || "") as string);
   useEffect(() => {
-    setMyAddr(account.address || null);
+    setMyAddr((account.address || "") as string);
   }, [account]);
 
   const pendingRewards = api.relic.pendingRewardsOfOwner.useQuery(
     {
       address: myAddr,
     },
-    { enabled: !!myAddr }
+    { enabled: myAddr !== "" }
   ).data?.rewards;
 
   const myBalance = api.relic.balanceOf.useQuery(
     { address: myAddr },
-    { enabled: !!myAddr }
+    { enabled: myAddr !== "" }
   ).data?.balance;
 
   const emissionCurveContract = api.relic.emissionCurve
@@ -47,15 +47,13 @@ const Read: NextPage = () => {
   const levelInfo = api.relic.getLevelInfo.useQuery({ poolId }).data?.levelInfo;
 
   const relicPositions = api.relic.relicPositionsOfOwner.useQuery(
-    {
-      owner: myAddr,
-    },
-    { enabled: !!myAddr }
+    { owner: myAddr },
+    { enabled: myAddr !== "" }
   ).data;
 
   const relicList = api.relic.relicsByAddress.useQuery(
     { address: myAddr },
-    { enabled: !!myAddr }
+    { enabled: myAddr !== "" }
   ).data?.list;
 
   if (account.isConnected && account.address) {

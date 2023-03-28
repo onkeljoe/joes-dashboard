@@ -39,12 +39,15 @@ const RelicDisplay = () => {
 
   const account = useAccount();
 
-  const myAddr = account?.address;
+  const myAddr = (account?.address || "") as string;
   // const poolId = 2;
 
-  const relicPositions = api.relic.relicPositionsOfOwner.useQuery({
-    owner: myAddr,
-  }).data;
+  const relicPositions = api.relic.relicPositionsOfOwner.useQuery(
+    {
+      owner: myAddr,
+    },
+    { enabled: myAddr !== "" }
+  ).data;
 
   console.log(relicPositions);
 
