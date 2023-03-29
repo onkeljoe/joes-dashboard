@@ -89,7 +89,7 @@ const Read: NextPage = () => {
                 levelInfo.multipliers.map((mul, index) => {
                   return (
                     <Tr key={index}>
-                      <Td isNumeric>{index}</Td>
+                      <Td isNumeric>{index + 1}</Td>
                       <Td isNumeric>{mul}</Td>
                       <Td isNumeric>
                         {(levelInfo.requiredMaturities[index] || 0) / 86400}
@@ -147,7 +147,10 @@ const Read: NextPage = () => {
         </Card>
         <Card m={12} p={6}>
           <Text>relicPositionsOfOwner {myAddr}:</Text>
-          <Text>{(JSON.stringify(relicPositions) || "").toString()}</Text>
+          {/* <Text>{(JSON.stringify(relicPositions) || "").toString()}</Text> */}
+          <pre>
+            {(JSON.stringify(relicPositions, null, "  ") || "").toString()}
+          </pre>
         </Card>
         <Card m={12} p={6}>
           <Text>pendingRewardsOfOwner {myAddr}:</Text>
@@ -190,7 +193,12 @@ const Read: NextPage = () => {
           </Table>
         </Card>
         <Card m={12} p={6}>
-          <Text>relic Infos for Address {myAddr}:</Text>
+          <Heading mb={2} alignSelf="center">
+            relic Infos
+          </Heading>
+          <Text mb={4} alignSelf="center" as="b">
+            for Address {myAddr}:
+          </Text>
           <Table size="sm" variant="striped" colorScheme="blue">
             <Thead>
               <Tr>
@@ -216,21 +224,25 @@ const Read: NextPage = () => {
                       <Td isNumeric>{rel.isUpgradeable ? "yes" : "no"}</Td>
                       <Td isNumeric>
                         {rel.amountFbeets.toLocaleString(undefined, {
-                          maximumFractionDigits: 3,
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
                         })}
                       </Td>
                       <Td isNumeric>
                         {rel.rewardPending.toLocaleString(undefined, {
-                          maximumFractionDigits: 3,
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
                         })}
                       </Td>
                       <Td isNumeric>
                         {rel.rewardPayed.toLocaleString(undefined, {
-                          maximumFractionDigits: 3,
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
                         })}
                       </Td>
                       <Td isNumeric>
                         {rel.maBeetsVP.toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
                         })}
                       </Td>
@@ -239,6 +251,51 @@ const Read: NextPage = () => {
                   );
                 })}
             </Tbody>
+            <Tfoot>
+              <Tr>
+                <Td></Td>
+                <Td></Td>
+                <Td></Td>
+                <Td></Td>
+                <Td isNumeric>
+                  {relicList &&
+                    relicList
+                      .reduce((sum, cur) => sum + cur.amountFbeets, 0)
+                      .toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+                </Td>
+                <Td isNumeric>
+                  {relicList &&
+                    relicList
+                      .reduce((sum, cur) => sum + cur.rewardPending, 0)
+                      .toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+                </Td>
+                <Td isNumeric>
+                  {relicList &&
+                    relicList
+                      .reduce((sum, cur) => sum + cur.rewardPayed, 0)
+                      .toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+                </Td>
+                <Td isNumeric>
+                  {relicList &&
+                    relicList
+                      .reduce((sum, cur) => sum + cur.maBeetsVP, 0)
+                      .toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+                </Td>
+                <Td></Td>
+              </Tr>
+            </Tfoot>
           </Table>
         </Card>
       </>
