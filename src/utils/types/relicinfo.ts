@@ -8,6 +8,7 @@ export const Relicinfo = z.object({
   amountFbeets: z.number(),
   rewardPending: z.number(),
   rewardPayed: z.number(),
+  rewardCredit: z.number(),
   maBeetsVP: z.number(),
   imageUrl: z.string(),
 });

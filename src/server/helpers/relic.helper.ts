@@ -34,6 +34,7 @@ export async function getRelicsByAddress(
           amountFbeets: relic.amount,
           rewardPending,
           rewardPayed: relic.rewardDebt,
+          rewardCredit: relic.rewardCredit,
           maBeetsVP,
           imageUrl,
         } as Relicinfo;

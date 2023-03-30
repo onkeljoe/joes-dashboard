@@ -209,6 +209,7 @@ const Read: NextPage = () => {
                 <Th isNumeric>amount fBEETS</Th>
                 <Th isNumeric>pending Reward</Th>
                 <Th isNumeric>payed Reward</Th>
+                <Th isNumeric>Reward credit</Th>
                 <Th isNumeric>maBEETS voting power</Th>
                 <Th isNumeric>image URL</Th>
               </Tr>
@@ -236,6 +237,12 @@ const Read: NextPage = () => {
                       </Td>
                       <Td isNumeric>
                         {rel.rewardPayed.toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </Td>
+                      <Td isNumeric>
+                        {rel.rewardCredit.toLocaleString(undefined, {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
                         })}
@@ -279,6 +286,15 @@ const Read: NextPage = () => {
                   {relicList &&
                     relicList
                       .reduce((sum, cur) => sum + cur.rewardPayed, 0)
+                      .toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
+                </Td>
+                <Td isNumeric>
+                  {relicList &&
+                    relicList
+                      .reduce((sum, cur) => sum + cur.rewardCredit, 0)
                       .toLocaleString(undefined, {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
