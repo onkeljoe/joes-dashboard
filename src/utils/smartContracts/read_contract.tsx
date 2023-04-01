@@ -3,7 +3,7 @@
 import { ethers } from "ethers";
 import type { BigNumber } from "ethers";
 // import { getAddress } from "ethers/lib/utils";
-import { relicAbi } from "../abi/relicAbi";
+import { RELIC_ABI } from "../abi/relicAbi";
 // import { keccak256 } from "ethers/lib/utils";
 
 interface Position {
@@ -29,11 +29,11 @@ interface PendingReward {
 
 type Address = string;
 
-const contractAdress = "0x1ed6411670c709F4e163854654BD52c74E66D7eC";
+const RELIC_CONTRACT = "0x1ed6411670c709F4e163854654BD52c74E66D7eC";
 const providerUrl = "https://rpc.ftm.tools";
 
 const provider = new ethers.providers.JsonRpcProvider(providerUrl);
-const contract = new ethers.Contract(contractAdress, relicAbi, provider);
+const contract = new ethers.Contract(RELIC_CONTRACT, RELIC_ABI, provider);
 
 export async function balanceOf(address: Address): Promise<number> {
   const resultobj = (await contract.balanceOf(address)) as BigNumber;

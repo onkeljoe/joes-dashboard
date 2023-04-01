@@ -1,4 +1,6 @@
-export const relicAbi = [
+export const RELIC_CONTRACT = "0x1ed6411670c709F4e163854654BD52c74E66D7eC";
+
+export const RELIC_ABI = [
   {
     inputs: [
       { internalType: "address", name: "_rewardToken", type: "address" },
