@@ -79,16 +79,23 @@ const Read: NextPage = () => {
         </Card>
 
         <Card m={12} p={6}>
-          <Heading my={4}>Relic #{relic}</Heading>
-          <HStack my={2}>
-            <Text>Level: {relicInfo?.level}</Text>
-            <Button disabled={!relicInfo?.isUpgradeable}>Upgrade</Button>
-          </HStack>
-          <HStack my={2}>
-            <Text>Transfer to: </Text>
-            <Input></Input>
-            <Button>send now</Button>
-          </HStack>
+          {!!relicInfo && (
+            <>
+              <Heading my={4}>Relic #{relic}</Heading>
+              <HStack my={2}>
+                <Text>
+                  Level: {relicInfo.level}, is{" "}
+                  {relicInfo.isUpgradeable ? "" : "not "}upgradeable
+                </Text>
+                <Button disabled={!relicInfo.isUpgradeable}>Upgrade</Button>
+              </HStack>
+              <HStack my={2}>
+                <Text>Transfer to: </Text>
+                <Input></Input>
+                <Button>send now</Button>
+              </HStack>
+            </>
+          )}
         </Card>
 
         <Card m={12} p={6}>
