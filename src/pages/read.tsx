@@ -12,10 +12,10 @@ import {
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { api } from "~/utils/api";
-import { CustomConnectButton } from "~/components/CustomConnectButton";
 
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
+import { CustomConnectButton } from "~/components/CustomConnectButton";
 
 const Read: NextPage = () => {
   const poolId = 2; // freshBeets pool id = 2
