@@ -33,10 +33,7 @@ export const CustomConnectButton = () => {
             {(() => {
               if (!connected) {
                 return (
-                  <Button
-                    onClick={openConnectModal}
-                    type="button"
-                  >
+                  <Button onClick={openConnectModal} type="button">
                     Connect Wallet
                   </Button>
                 );
@@ -44,20 +41,14 @@ export const CustomConnectButton = () => {
 
               if (chain.unsupported) {
                 return (
-                  <Button
-                    onClick={openChainModal}
-                    type="button"
-                  >
+                  <Button onClick={openChainModal} type="button">
                     Wrong network
                   </Button>
                 );
               }
               return (
                 <div>
-                  <Button
-                    onClick={openAccountModal}
-                    type="button"
-                  >
+                  <Button onClick={openAccountModal} type="button">
                     {account.displayName}
                   </Button>
                 </div>

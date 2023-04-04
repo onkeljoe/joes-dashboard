@@ -22,12 +22,15 @@ import { CustomConnectButton } from "~/components/CustomConnectButton";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import { type Relicinfo } from "~/utils/types/relicinfo";
+import { useTransferRelic } from "~/hooks/useTransferRelic";
+import { Address } from "~/utils/types/contractTypes";
 
 const Read: NextPage = () => {
   // const poolId = 2; // freshBeets pool id = 2
   const account = useAccount();
   const [relic, setRelic] = useState(0);
   const [relicInfo, setRelicInfo] = useState<Relicinfo | undefined>(undefined);
+  const [toAddress, setToAddress] = useState("");
 
   const relicList = api.relic.relicsByAddress.useQuery(
     { address: account.address || "" },
@@ -91,9 +94,24 @@ const Read: NextPage = () => {
               </HStack>
               <HStack my={2}>
                 <Text>Transfer to: </Text>
-                <Input></Input>
-                <Button>send now</Button>
+                <Input
+                  value={toAddress}
+                  onChange={(e) => setToAddress(e.target.value)}
+                  placeholder="0x..."
+                  size="lg"
+                  isInvalid={!Address.safeParse(toAddress).success}
+                  errorBorderColor="red"
+                />
+                <Button disabled={!Address.safeParse(toAddress).success}>
+                  send now
+                </Button>
               </HStack>
+              <Text>{toAddress}</Text>
+              <Text>
+                is safeParsed:{" "}
+                {Address.safeParse(toAddress).success ? "yes" : "no"}
+              </Text>
+              <pre>{JSON.stringify(relicInfo, undefined, "  ")}</pre>
             </>
           )}
         </Card>
